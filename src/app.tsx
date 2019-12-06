@@ -1,5 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Josher from './components/josher';
+import Navigation from './components/navigation';
+import Josher2 from "./components/josher2";
+import Brand from "./components/brand";
 
 const Container = styled.div`
   height: 100vh;
@@ -10,53 +14,22 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const Canvas = styled.canvas``;
+
+export type AppState = 'josher' | 'josher2';
 
 const App: React.FC = () => {
-  const canvasRef = React.useRef(null);
+  const [currentAppState, setCurrentAppState] = useState<AppState>('josher');
 
-  const moveTheLad2 = (mousePositionX: number, mousePositionY: number) => {
-    if (canvasRef && canvasRef.current) {
-      // @ts-ignore
-      const canvas: HTMLCanvasElement = canvasRef.current;
-      const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-
-      const pageWidth = window.innerWidth;
-      const pageHeight = window.innerHeight;
-      const centerWidth = 0.5 * pageWidth;
-      const centerHeight = 0.5 * pageHeight;
-
-      context.canvas.width = pageWidth;
-      context.canvas.height = pageHeight;
-
-      context.font = '140px Times New Roman';
-      context.textBaseline = 'middle';
-      context.textAlign = 'center';
-
-      context.translate(centerWidth, centerHeight);
-      context.rotate(
-        Math.atan2(
-          centerHeight - mousePositionY,
-          centerWidth - mousePositionX
-        ) +
-          Math.PI / 2
-      );
-      context.translate(-centerWidth, -centerHeight);
-      context.fillText('Josher', centerWidth, centerHeight);
-    }
-  };
-  const moveTheLad = (e: MouseEvent) => moveTheLad2(e.clientX, e.clientY);
-  useEffect(() => moveTheLad2(window.innerWidth / 2, window.innerHeight), []);
-
-  useEffect(() => {
-    document.addEventListener('mousemove', moveTheLad);
-    return () => {
-      document.removeEventListener('mousemove', moveTheLad);
-    };
-  }, []);
+  console.log(currentAppState);
   return (
     <Container>
-      <Canvas ref={canvasRef} />
+      <Navigation
+        currentAppState={currentAppState}
+        setCurrentAppState={setCurrentAppState}
+      />
+      {currentAppState === 'josher' && <Josher />}
+      {currentAppState === 'josher2' && <Josher2 />}
+      <Brand />
     </Container>
   );
 };
