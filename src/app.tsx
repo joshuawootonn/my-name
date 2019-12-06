@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-import useInterval from './hooks/useInterval';
-
 const Container = styled.div`
   height: 100vh;
   width: 100vw;
@@ -17,31 +15,38 @@ const Canvas = styled.canvas``;
 const App: React.FC = () => {
   const canvasRef = React.useRef(null);
 
-  const moveTheLad = (e: MouseEvent) => {
+  const moveTheLad2 = (mousePositionX: number, mousePositionY: number) => {
     if (canvasRef && canvasRef.current) {
       // @ts-ignore
       const canvas: HTMLCanvasElement = canvasRef.current;
       const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-      context.canvas.width = window.innerWidth;
-      context.canvas.height = window.innerHeight;
+
+      const pageWidth = window.innerWidth;
+      const pageHeight = window.innerHeight;
+      const centerWidth = 0.5 * pageWidth;
+      const centerHeight = 0.5 * pageHeight;
+
+      context.canvas.width = pageWidth;
+      context.canvas.height = pageHeight;
+
       context.font = '140px Times New Roman';
       context.textBaseline = 'middle';
       context.textAlign = 'center';
 
-      const x = 10;
-      const y = 10;
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      const cx = x + 0.5 * width; // x of shape center
-      const cy = y + 0.5 * height;
-
-      context.translate(cx, cy);
-      context.rotate(Math.atan2(cy - e.clientY, cx - e.clientX) + Math.PI / 2);
-      context.translate(-cx, -cy);
-      // context.transform(1, 0.5, -0.5, 1, 30, 10);
-      context.fillText('Josher', window.innerWidth / 2, window.innerHeight / 2);
+      context.translate(centerWidth, centerHeight);
+      context.rotate(
+        Math.atan2(
+          centerHeight - mousePositionY,
+          centerWidth - mousePositionX
+        ) +
+          Math.PI / 2
+      );
+      context.translate(-centerWidth, -centerHeight);
+      context.fillText('Josher', centerWidth, centerHeight);
     }
   };
+  const moveTheLad = (e: MouseEvent) => moveTheLad2(e.clientX, e.clientY);
+  useEffect(() => moveTheLad2(window.innerWidth / 2, window.innerHeight), []);
 
   useEffect(() => {
     document.addEventListener('mousemove', moveTheLad);
