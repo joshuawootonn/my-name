@@ -27,10 +27,19 @@ const App: React.FC = () => {
       context.font = '140px Times New Roman';
       context.textBaseline = 'middle';
       context.textAlign = 'center';
-      console.log(e.clientX, e.clientY);
-      context.rotate(.2 );
+
+      const x = 10;
+      const y = 10;
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const cx = x + 0.5 * width; // x of shape center
+      const cy = y + 0.5 * height;
+
+      context.translate(cx, cy);
+      context.rotate(Math.atan2(cy - e.clientY, cx - e.clientX) + Math.PI / 2);
+      context.translate(-cx, -cy);
       // context.transform(1, 0.5, -0.5, 1, 30, 10);
-      context.fillText('Josher', 200, 150);
+      context.fillText('Josher', window.innerWidth / 2, window.innerHeight / 2);
     }
   };
 
