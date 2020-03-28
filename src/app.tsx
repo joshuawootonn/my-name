@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Josher from './components/josher';
 import Navigation from './components/navigation';
-import Josher2 from './components/josher2';
+import Jbones from './components/jbones';
 import Brand from './components/brand';
 
 const Container = styled.div`
@@ -15,10 +15,10 @@ const Container = styled.div`
     align-items: center;
 `;
 
-export type AppState = 'josher' | 'josher2';
+export type AppState = 'josher' | 'jbones';
 
 const App: React.FC = () => {
-    const [currentAppState, setCurrentAppState] = useState<AppState>('josher');
+    const [currentAppState, setCurrentAppState] = useState<AppState>('jbones');
 
     console.log(currentAppState);
     return (
@@ -28,7 +28,7 @@ const App: React.FC = () => {
                 setCurrentAppState={setCurrentAppState}
             />
             {currentAppState === 'josher' && <Josher />}
-            {currentAppState === 'josher2' && <Josher2 />}
+            {currentAppState === 'jbones' && <Jbones />}
             <Brand />
         </Container>
     );
