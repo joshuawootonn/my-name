@@ -21,6 +21,8 @@ export const AssetProvider = props => {
             'https://cdn.glitch.com/bf08baaa-913a-4fd3-af23-ba148998403d%2Fcharacter.png?v=1562187920811'
         );
         loader.load((loader, resources) => {
+
+            console.log([false, resources]);
             setAssetState([false, resources]);
         });
     }, []);
