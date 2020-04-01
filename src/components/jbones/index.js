@@ -1,19 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
+import { AssetProvider } from './context/asset.context';
+import App from './app';
 
-import { css } from 'styled-components/macro';
-
-const styles = {
-    frame: css`
-        height: 100vh;
-        width: 100vw;
-    `,
+const Index = props => {
+    return (
+        <AssetProvider>
+            <App />
+        </AssetProvider>
+    );
 };
 
-const Jbones = () => (
-    <iframe
-        css={styles.frame}
-        src={'file://fluoridated-thoracic-bone.glitch.me/'}
-    />
-);
-
-export default Jbones;
+export default Index;
