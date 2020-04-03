@@ -11,7 +11,7 @@ export const AssetProvider = props => {
 
     useEffect(() => {
         const loader = new pixi.Loader();
-        loader.add('map', 'http://localhost:8080/map.json');
+        loader.add('map', 'http://localhost:8080/assets/tilemaps/map.json');
         loader.add(
             'tileset',
             'https://cdn.glitch.com/bf08baaa-913a-4fd3-af23-ba148998403d%2Fnature-paltformer-tileset-16x16.png?v=1562185449857'

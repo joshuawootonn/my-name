@@ -35,7 +35,7 @@ const Background = ({ assets }) => {
         }
     }
     return (
-        <Container scale={{ x: 2, y: 2 }}>
+        <Container scale={{ x: 3, y: 3 }}>
             {sprites.map(sprite => (
                 <Sprite
                     key={sprite.x * sprite.y * Math.random()}

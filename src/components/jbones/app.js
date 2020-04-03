@@ -3,8 +3,6 @@ import { Container, Stage, Text } from '@inlet/react-pixi';
 import React from 'react';
 import Loader from './components/loader';
 import Sky from './components/sky';
-import Background from './components/background';
-
 const App = () => {
     const [isLoading, assets] = useAssets();
 
@@ -23,7 +21,6 @@ const App = () => {
             ) : (
                 <>
                     <Sky assets={assets} />
-                    <Background assets={assets} />
                 </>
             )}
         </Stage>
