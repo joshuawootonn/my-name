@@ -1,29 +1,63 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import * as pixi from 'pixi.js';
+import * as PIXI from 'pixi.js';
 
-const defaultAssetContextState = [true, null];
+const map = require('../assets/tilemaps/map.json');
+const water = require('../assets/images/water.png');
+const sky = require('../assets/images/sky.png');
+const main = require('../assets/images/main.png');
+const rocks = require('../assets/images/rocks.png');
+const plants = require('../assets/images/plants.png');
+
+const defaultAssetContextState = [true, {}];
 const AssetContext = createContext(defaultAssetContextState);
 
 export const useAssets = () => useContext(AssetContext);
+
+const tileSize = 16;
+
+function getTexturesFromImage(image) {
+    const { width, height } = image.texture;
+    const textures = [];
+    const tileHeight = height / tileSize;
+    const tileWidth = width / tileSize;
+    for (let i = 0; i < tileHeight * tileWidth; i++) {
+        const x = i % tileWidth;
+        const y = Math.floor(i / tileWidth);
+        textures[i] = new PIXI.Texture(
+            image.texture,
+            new PIXI.Rectangle(x * tileSize, y * tileSize, tileSize, tileSize)
+        );
+    }
+    return textures;
+}
 
 export const AssetProvider = props => {
     const [assetState, setAssetState] = useState(defaultAssetContextState);
 
     useEffect(() => {
-        const loader = new pixi.Loader();
-        loader.add('map', 'http://localhost:8080/assets/tilemaps/map.json');
-        loader.add(
-            'tileset',
-            'https://cdn.glitch.com/bf08baaa-913a-4fd3-af23-ba148998403d%2Fnature-paltformer-tileset-16x16.png?v=1562185449857'
-        );
-        loader.add(
-            'character',
-            'https://cdn.glitch.com/bf08baaa-913a-4fd3-af23-ba148998403d%2Fcharacter.png?v=1562187920811'
-        );
-        loader.load((loader, resources) => {
+        const loader = new PIXI.Loader();
+        loader.add('sky', sky);
+        loader.add('main', main);
+        loader.add('rocks', rocks);
+        loader.add('plants', plants);
+        loader.add('water', water);
+        loader.load(async (loader, { sky, main, rocks, plants, water }) => {
+            const skyTextures = getTexturesFromImage(sky);
+            const mainTextures = getTexturesFromImage(main);
+            const rocksTextures = getTexturesFromImage(rocks);
+            const plantTextures = getTexturesFromImage(plants);
+            const waterTextures = getTexturesFromImage(water);
 
-            console.log([false, resources]);
-            setAssetState([false, resources]);
+            const textures = [
+                0,
+                ...mainTextures,
+                ...plantTextures,
+                ...rocksTextures,
+                ...skyTextures,
+                ...waterTextures,
+            ];
+            console.log(map);
+            setAssetState([false, { textures, map }]);
         });
     }, []);
 

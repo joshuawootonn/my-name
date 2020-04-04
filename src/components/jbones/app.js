@@ -1,12 +1,13 @@
 import { useAssets } from './context/asset.context';
-import { Container, Stage, Text } from '@inlet/react-pixi';
+import { Stage } from '@inlet/react-pixi';
 import React from 'react';
 import Loader from './components/loader';
-import Sky from './components/sky';
-const App = () => {
-    const [isLoading, assets] = useAssets();
+import Layer from './components/layer';
 
-    console.log(isLoading);
+const App = () => {
+    const [isLoading, { textures, map }] = useAssets();
+
+    console.log(map);
     return (
         <Stage
             options={{
@@ -20,7 +21,9 @@ const App = () => {
                 <Loader />
             ) : (
                 <>
-                    <Sky assets={assets} />
+                    {map.layers.map((layer, i) => (
+                        <Layer key={i} layer={layer} textures={textures} />
+                    ))}
                 </>
             )}
         </Stage>
